@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 import '../index.css';
 import * as Yup from 'yup';
 
@@ -10,18 +10,8 @@ import AuthContext from '../context/AuthContext';
 import AuthProvider from '../context/AuthProvider';
 
 const AuthFrom = () => {
-  const { setNotValid } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log(token);
-    if (!token) {
-      navigate('/login');
-    } else {
-      navigate('/');
-    }
-  }, [navigate]);
+  // eslint-disable-next-line no-unused-vars
+  const { setNotValid, setValid } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -36,7 +26,7 @@ const AuthFrom = () => {
         .max(10, 'Must be 10 characters or less')
         .required('Required'),
     }),
-    // async/awit is better
+
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const response = await axios.post('/api/v1/login', {
@@ -46,14 +36,10 @@ const AuthFrom = () => {
         console.log(response.data);
         const result = response.data;
         localStorage.setItem(result.username, result.token);
-        // REFACTOR PLEASE :)
-        // TO DO IT NICE AND SEXY
-        navigate('/');
       } catch (error) {
         console.error(error);
         console.log(setNotValid);
         alert(error.message);
-        navigate('/login');
       } finally {
         setSubmitting(false);
       }

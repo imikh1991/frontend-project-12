@@ -2,25 +2,41 @@ import './App.css';
 import {
   createBrowserRouter,
   RouterProvider,
+  Navigate,
 } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage.jsx';
-import ErrorPage from './pages/ErrorPage.jsx';
+import { useState, useEffect } from 'react';
+
+import routes from './base/enums/routeList';
+
+const Router = () => {
+  const router = createBrowserRouter(routes);
+  return <RouterProvider router={router} />;
+};
 
 const App = () => {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <HomePage />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-  ]);
+  const [authenticated, setAuthenticated] = useState(null);
+  useEffect(() => {
+    const currentUser = localStorage.getItem('admin');
+    if (currentUser) {
+      setAuthenticated(currentUser);
+    }
+  }, []);
 
-  return <RouterProvider router={router} />;
+  if (authenticated === null) {
+    return null;
+  }
+
+  return (
+    // TO DO -> REFACTOR THIS ERROR
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <div>
+      {authenticated ? (
+        <Router />
+      ) : (
+        <Navigate replace to="/login" />
+      )}
+    </div>
+  );
 };
 
 export default App;
