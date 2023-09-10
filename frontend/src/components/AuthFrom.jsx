@@ -1,10 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
+import axios from 'axios';
 import '../index.css';
 import * as Yup from 'yup';
 
+import AuthContext from '../context/AuthContext';
+
 const AuthFrom = () => {
+  const { setNotValid } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -18,9 +23,21 @@ const AuthFrom = () => {
         .max(10, 'Must be 10 characters or less')
         .required('Required'),
     }),
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values, { setSubmitting }) => {
+      setTimeout(() => {
+        setSubmitting(false);
+        axios
+          .post('/api/v1/login', { username: values.username, password: values.password }) // Fixed values.name to values.username
+          .then((response) => {
+            console.log(response.data);
+            const result = response.data;
+            localStorage.setItem(result.username, result.token);
+          })
+          .catch((e) => {
+            console.log(e);
+            console.log(setNotValid);
+          });
+      }, 1000);
     },
   });
 
@@ -63,7 +80,9 @@ const AuthFrom = () => {
           <div>{formik.errors.password}</div>
         ) : null}
       </div>
-      <button className="w-100 mb-3 btn btn-outline-primary" type="submit">Войти</button>
+      <button className="w-100 mb-3 btn btn-outline-primary" type="submit">
+        Войти
+      </button>
     </form>
   );
 };
