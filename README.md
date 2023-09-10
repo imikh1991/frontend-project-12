@@ -1,23 +1,11 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/imikh1991/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/imikh1991/frontend-project-12/actions)
 
-# [React App boilerplate](https://js-react-hexlet-chat.onrender.com/)
+[![Actions Status](https://github.com/imikh1991/frontend-project-12/workflows/nodeci/badge.svg)](https://github.com/imikh1991/frontend-project-12/actions)
 
-## Setup
 
-```bash
-make install
-```
+# [React App boilerplate Hexlet](https://js-react-hexlet-chat.onrender.com/)
 
-## Development
+Deploy Slack clone
+# [App](https://frontend-project-12-production-ac69.up.railway.app/login)
 
-```bash
-make start
-```
-On *localhost:3000*
-
-[![Hexlet Ltd. logo](https://raw.githubusercontent.com/Hexlet/assets/master/images/hexlet_logo128.png)](https://hexlet.io/?utm_source=github&utm_medium=link&utm_campaign=react-application)
-
-This repository is created and maintained by the team and the community of Hexlet, an educational project. [Read more about Hexlet](https://hexlet.io/?utm_source=github&utm_medium=link&utm_campaign=react-application).
-
-See most active contributors on [hexlet-friends](https://friends.hexlet.io/).
