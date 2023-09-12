@@ -46,6 +46,9 @@ const AuthFrom = () => {
     },
   });
 
+  // Define isSubmitting within your component
+  const { isSubmitting } = formik;
+
   return (
     <AuthProvider>
       <form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
@@ -86,13 +89,15 @@ const AuthFrom = () => {
             <div>{formik.errors.password}</div>
           ) : null}
         </div>
-        <button className="w-100 mb-3 btn btn-outline-primary" type="submit">
-          Войти
+        <button
+          type="submit"
+          className="w-100 mb-3 btn btn-outline-primary"
+          disabled={isSubmitting} // Use isSubmitting to disable the button
+        >
+          {isSubmitting ? 'Пожалуйста, подождите...' : 'Войти'}
         </button>
       </form>
-
     </AuthProvider>
-
   );
 };
 

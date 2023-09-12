@@ -26,6 +26,8 @@ const App = () => {
     return null;
   }
 
+  console.log('authenticated>>', authenticated);
+
   return (
     // TO DO -> REFACTOR THIS ERROR
     // eslint-disable-next-line react/jsx-no-useless-fragment

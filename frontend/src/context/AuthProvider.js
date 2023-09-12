@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
   const setValid = () => setStatus('valid');
 
   const setNotValid = () => setStatus('not valid');
-
+  console.log('AuthProvider >> status>>', status);
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AuthContext.Provider value={{ status, setValid, setNotValid }}>
