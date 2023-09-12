@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import AuthContext from '../context/AuthContext';
 import AuthProvider from '../context/AuthProvider';
 
-const AuthFrom = ({ login }) => {
+const AuthFrom = () => {
   const { setNotValid, setValid } = useContext(AuthContext);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -34,13 +34,16 @@ const AuthFrom = ({ login }) => {
           password: values.password,
         });
         const result = response.data;
+
         // НЕ РАБОТАЕТ РЕДИРЕКТ
         // ПЕРЕДЕЛАТЬ!!!
-        login();
+        // ТАК ДЕЛАТЬ ПО ТУПОМУ
+        // login();
         navigate('/');
         localStorage.setItem(result.username, result.token);
+        console.log(localStorage);
       } catch (e) {
-        console.error(error);
+        console.error(e);
         setError('Неверные имя пользователя или пароль');
         setNotValid();
         alert(e.message);

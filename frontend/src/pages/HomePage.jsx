@@ -1,5 +1,11 @@
-import React from 'react';
+import Header from '../components/Header';
+import Chat from './ChatPage';
 
-const HomePage = () => <div>Home Page</div>;
+const Home = () => (
+  <div className="d-flex flex-column h-100">
+    <Header />
+    <Chat />
+  </div>
+);
 
-export default HomePage;
+export default Home;
