@@ -1,11 +1,13 @@
 import './App.css';
 import {
+  Route,
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
 import routes from './base/enums/routeList';
 
 const Router = () => {
@@ -14,30 +16,27 @@ const Router = () => {
 };
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(null);
-  useEffect(() => {
-    const currentUser = localStorage.getItem('admin');
-    if (currentUser) {
-      setAuthenticated(currentUser);
-    }
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('admin') || false);
 
-  if (authenticated === null) {
-    return null;
-  }
-
-  console.log('authenticated>>', authenticated);
+  const login = () => {
+    setIsAuthenticated(true);
+  };
+  console.log('isAuthenticated>>>', isAuthenticated);
 
   return (
-    // TO DO -> REFACTOR THIS ERROR
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <div>
-      {authenticated ? (
-        <Router />
-      ) : (
-        <Navigate replace to="/login" />
-      )}
-    </div>
+    <Router>
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? (
+            <HomePage />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route path="login" element={<LoginPage login={login} />} />
+    </Router>
   );
 };
 

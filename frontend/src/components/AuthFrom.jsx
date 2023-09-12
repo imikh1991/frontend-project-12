@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
-
-import '../index.css';
+import { useNavigate } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 import AuthContext from '../context/AuthContext';
 import AuthProvider from '../context/AuthProvider';
 
-const AuthFrom = () => {
-  // eslint-disable-next-line no-unused-vars
+const AuthFrom = ({ login }) => {
   const { setNotValid, setValid } = useContext(AuthContext);
-
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -33,22 +33,27 @@ const AuthFrom = () => {
           username: values.username,
           password: values.password,
         });
-        console.log(response.data);
         const result = response.data;
+        // НЕ РАБОТАЕТ РЕДИРЕКТ
+        // ПЕРЕДЕЛАТЬ!!!
+        login();
+        navigate('/');
         localStorage.setItem(result.username, result.token);
-      } catch (error) {
+      } catch (e) {
         console.error(error);
-        console.log(setNotValid);
-        alert(error.message);
+        setError('Неверные имя пользователя или пароль');
+        setNotValid();
+        alert(e.message);
       } finally {
         setSubmitting(false);
+        setValid();
       }
     },
   });
 
-  // Define isSubmitting within your component
   const { isSubmitting } = formik;
-
+  // ВЫБИВАЕТ АЛЕРТ ПО ВАЛИДНОМУ!!!
+  // ЛОГИН: admin ПАРОЛЬ: admin
   return (
     <AuthProvider>
       <form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
@@ -85,14 +90,16 @@ const AuthFrom = () => {
           <label className={formik.values.password && 'filled'} htmlFor="password">
             Пароль
           </label>
-          {formik.touched.password && formik.errors.password ? (
-            <div>{formik.errors.password}</div>
-          ) : null}
         </div>
+        {error && (
+        <Alert variant="danger">
+          {error}
+        </Alert>
+        )}
         <button
           type="submit"
           className="w-100 mb-3 btn btn-outline-primary"
-          disabled={isSubmitting} // Use isSubmitting to disable the button
+          disabled={isSubmitting}
         >
           {isSubmitting ? 'Пожалуйста, подождите...' : 'Войти'}
         </button>
