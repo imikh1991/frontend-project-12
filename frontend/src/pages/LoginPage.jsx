@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Card } from 'react-bootstrap';
-import AuthForm from '../components/AuthFrom';
+import AuthForm from '../components/AuthForm';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import chatImage from '../images/chat.jpg';

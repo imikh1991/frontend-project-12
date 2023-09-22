@@ -12,8 +12,7 @@ const ChannelsBox = () => {
   console.log(channels);
   return (
     <div id="channels-box">
-      <div>ChannelsBox = </div>
-      {channels.length}
+
       <ul className="nav flex-column nav-pills nav-fill px-2">
         {channels.map((channel) => (
           <li key={channel.id} className="nav-item w-100">

@@ -22,7 +22,8 @@ const App = () => {
     setIsAuthenticated(true);
   };
   console.log('isAuthenticated>>>', isAuthenticated);
-
+  // TO DO
+  // ДОДЕЛАТЬ НОРМАЛЬНО АУТЕТИФИКАЦИЮ
   return (
     <Router>
       <Route

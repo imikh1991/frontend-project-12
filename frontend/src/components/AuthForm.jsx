@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import * as Yup from 'yup';
 
-import AuthContext from '../context/AuthContext';
+// import AuthContext from '../context/AuthContext';
 import AuthProvider from '../context/AuthProvider';
 
 const AuthFrom = () => {
-  const { setNotValid, setValid } = useContext(AuthContext);
+  // const { setNotValid, setValid } = useContext(AuthContext);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const formik = useFormik({
@@ -35,21 +35,19 @@ const AuthFrom = () => {
         });
         const result = response.data;
 
-        // НЕ РАБОТАЕТ РЕДИРЕКТ
-        // ПЕРЕДЕЛАТЬ!!!
-        // ТАК ДЕЛАТЬ ПО ТУПОМУ
-        // login();
         navigate('/');
-        localStorage.setItem(result.username, result.token);
+        // localStorage.setItem(result.username, result.token);
+        localStorage.setItem('auth', result.token);
+        localStorage.setItem('username', result.username);
         console.log(localStorage);
       } catch (e) {
         console.error(e);
         setError('Неверные имя пользователя или пароль');
-        setNotValid();
+        // setNotValid();
         alert(e.message);
       } finally {
         setSubmitting(false);
-        setValid();
+        // setValid();
       }
     },
   });

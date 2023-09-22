@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector
+import { useSelector } from 'react-redux';
 
 import Messages from './Messages';
 
@@ -10,11 +10,7 @@ const MessagesBox = () => {
   console.log(messages);
 
   return (
-    <>
-      <div>MessagesBox</div>
-      {messages.length}
-      <Messages />
-    </>
+    <Messages />
   );
 };
 
