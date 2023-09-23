@@ -6,7 +6,9 @@ export const fetchAuthData = createAsyncThunk(
   'fetchAuthData',
   async (token) => {
     const response = await axios.get('/api/v1/data', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     return response.data;
@@ -28,7 +30,7 @@ const loaderSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAuthData.fulfilled, (state) => {
-        state.loadingStatus = 'finish';
+        state.loadingStatus = 'idle';
         state.error = null;
       })
       .addCase(fetchAuthData.rejected, (state, action) => {

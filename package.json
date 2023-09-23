@@ -21,7 +21,9 @@
   "homepage": "https://github.com/imikh1991/frontend-project-12#readme",
   "dependencies": {
     "@babel/preset-env": "^7.22.1",
-    "@hexlet/chat-server": "^1.1.8"
+    "@hexlet/chat-server": "^1.1.8",
+    "classnames": "^2.3.2",
+    "react-bootstrap-icons": "^1.10.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"

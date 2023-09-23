@@ -29,14 +29,19 @@ const App = () => {
       <Route
         path="/"
         element={
-          isAuthenticated ? (
-            <HomePage />
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        }
+            !isAuthenticated ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <HomePage />
+            )
+          }
       />
-      <Route path="login" element={<LoginPage login={login} />} />
+      <Route
+        path="login"
+        element={
+          <LoginPage login={login} />
+          }
+      />
     </Router>
   );
 };
