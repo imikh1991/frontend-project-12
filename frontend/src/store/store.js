@@ -8,6 +8,5 @@ export default configureStore({
     loader: loaderReducer,
     channels: channelsReducer,
     messages: messagesReducer,
-
   },
 });

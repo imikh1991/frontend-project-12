@@ -15,9 +15,7 @@ const ChannelsBox = () => {
   // const { entities, currentChannelId } = useSelector((state) => state.channels);
   // const channels = Object.values(entities);
   // console.log(channels);
-  // TO DO
-  // НЕ ОТОБРАЖАЮТСЯ КАНАЛЫ
-  // РАЗОБРАТЬСЯ ПОЧЕМУ???
+  // ВЫБОР КАНАЛА СО СМЕНОЙ ID по КЛИКУ
 
   return (
     <div id="channels-box">
