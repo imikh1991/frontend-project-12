@@ -1,26 +1,37 @@
-import React from 'react';
-// import Button from 'react-bootstrap/Button';
-// import ButtonGroup from 'react-bootstrap/ButtonGroup';
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+// import { Button } from 'react-bootstrap';
+import AddChannelModal from '../modal/AddChannel'; // Import your modal component
 import ChannelsHeader from './ChanelsHeader';
 import Channels from './Channels';
 
 const ChannelsBox = () => {
-  // const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { entities, currentChannelId } = useSelector((state) => state.channels);
+  const channels = Object.values(entities);
+  console.log('channels>>>', channels);
+  console.log('currentChannelId>>>', currentChannelId);
+
   const handleAddChannel = () => {
-    console.log('Clicked!!!');
+    setIsModalOpen(true);
   };
 
-  // const { entities, currentChannelId } = useSelector((state) => state.channels);
-  // const channels = Object.values(entities);
-  // console.log(channels);
-  // ВЫБОР КАНАЛА СО СМЕНОЙ ID по КЛИКУ
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div id="channels-box">
       <ChannelsHeader handleAddChannel={handleAddChannel} />
       <Channels />
+
+      {isModalOpen && (
+        <AddChannelModal
+          show={isModalOpen}
+          onHide={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
