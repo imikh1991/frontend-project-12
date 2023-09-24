@@ -11,7 +11,7 @@ const ErrorPage = () => {
       <Header />
       <h1>Sorry! Error has occcured</h1>
       <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-        <img src={errorImage} height="200" width="200" alt="Письмо с сердечком" />
+        <img src={errorImage} height="200" width="200" alt="Лого" />
 
       </div>
       <p>

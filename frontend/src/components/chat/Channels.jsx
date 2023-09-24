@@ -30,9 +30,6 @@ const Channels = () => {
   */
   return channels && (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-      <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-        <span>Каналы</span>
-      </div>
       <ul className="nav flex-column nav-pills nav-fill px-2">
         {channels.map(({ id, name }) => (
           <li key={id} className="nav-item w-100">
