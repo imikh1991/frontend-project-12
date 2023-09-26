@@ -1,26 +1,27 @@
-import React from 'react';
-import {
-  Button, ButtonGroup, Col, Dropdown, Nav,
-} from 'react-bootstrap';
-
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
-
+// import cn from 'classnames';
+// import ButtonGroup from 'react-bootstrap/ButtonGroup';
+// import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
+import { io } from 'socket.io-client';
+import { actions as channelsActions, fetchChannels } from '../../store/slices/channelsSlice';
 import { getAllChannels, getCurrentChannelId } from '../../store/slices/selectors';
-import { actions } from '../../store/slices/channelsSlice';
-import { openModal } from '../../store/slices/modalSlice';
 
 const Channels = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchChannels());
+  }, [dispatch]);
 
-  const showModal = (type, id) => () => {
-    dispatch(openModal({ type, id }));
-  };
-
+  const socket = io();
+  socket.on('newChannel', (payload) => {
+    dispatch(channelsActions.addNewChannel(payload));
+  });
   const channels = useSelector((state) => getAllChannels(state));
-  console.log('channels>>>', channels);
-  // EMPTY!!!!
   const currentChannelId = useSelector((state) => getCurrentChannelId(state));
+  console.log('channels>>>', channels);
   console.log('currentChannelId>>>', currentChannelId);
   /* КАНАЛЫ МЕНЯЕМ ПО КЛИКУ
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -30,76 +31,23 @@ const Channels = () => {
     dispatch(channelsActions.setCurrentChannel(payload));
   };
   */
-  return (
-    <Col
-      md="2"
-      className="col-4 border-end pt-5 px-0 bg-light"
-    >
-      <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
+  return channels && (
+    <div className="bg-light">
+      <ul className="nav flex-column nav-pills nav-fill px-2">
+        {channels.map(({ id, name }) => (
+          <li key={id} className="nav-item w-100">
+            <Button
+              className="w-100 rounded-0 text-start text-truncate"
+              onClick={() => { dispatch(channelsActions.setCurrentChannelId(id)); }}
+            >
+              <span className="me-1">#</span>
+              {name}
+            </Button>
+          </li>
+        ))}
+      </ul>
 
-        <Button
-          type="button"
-          variant="group-vertical"
-          className="p-0 text-primary"
-        >
-
-          <span className="visually-hidden">+</span>
-        </Button>
-      </div>
-      <Nav
-        fill
-        variant="pills"
-        as="ul"
-        className="flex-column px-2"
-      >
-        {channels && currentChannelId && (
-          channels.map(({ id, removable }) => {
-            const variant = id === currentChannelId ? 'secondary' : 'light';
-            return (removable) ? (
-              <Nav.Item key={id} className="w-100">
-                <Dropdown
-                  as={ButtonGroup}
-                  className="d-flex rounded-0"
-                >
-                  <Button
-                    variant={variant}
-                    className="w-100 rounded-0 text-start text-truncate"
-                    onClick={() => { dispatch(actions.setCurrentChannelId(id)); }}
-                  >
-                    <span className="me-1">#</span>
-                    {channels}
-                  </Button>
-                  <Dropdown.Toggle
-                    variant={variant}
-                  >
-                    <span className="visually-hidden">Канал</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={showModal('rename', id)}
-                    />
-                    <Dropdown.Item
-                      onClick={showModal('delete', id)}
-                    />
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Nav.Item>
-            ) : (
-              <Nav.Item key={id}>
-                <Button
-                  variant={variant}
-                  className="w-100 rounded-0 text-start text-truncate"
-                  onClick={() => { dispatch(actions.setCurrentChannelId(id)); }}
-                >
-                  <span className="me-1">#</span>
-                  {channels}
-                </Button>
-              </Nav.Item>
-            );
-          })
-        )}
-      </Nav>
-    </Col>
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ const AddChannelModal = ({ show, onHide, onSubmit }) => {
     e.preventDefault();
     onSubmit(channelName);
     setChannelName('');
+    console.log('Submitted');
   };
 
   return (

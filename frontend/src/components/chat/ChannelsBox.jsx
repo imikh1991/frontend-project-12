@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 // import { Button } from 'react-bootstrap';
 import AddChannelModal from '../modal/AddChannel'; // Import your modal component
 import ChannelsHeader from './ChanelsHeader';
@@ -8,10 +8,10 @@ import Channels from './Channels';
 const ChannelsBox = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { entities, currentChannelId } = useSelector((state) => state.channels);
-  const channels = Object.values(entities);
-  console.log('channels>>>', channels);
-  console.log('currentChannelId>>>', currentChannelId);
+  // const { entities, currentChannelId } = useSelector((state) => state.channels);
+  // const channels = Object.values(entities);
+  // console.log('channels>>>', channels);
+  // console.log('currentChannelId>>>', currentChannelId);
 
   const handleAddChannel = () => {
     setIsModalOpen(true);
