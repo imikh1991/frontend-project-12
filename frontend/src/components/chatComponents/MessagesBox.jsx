@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import ChatHeader from './ChatHeader';
 import Messages from './Messages';
+import ChatHeader from './ChatHeader';
 
 const MessagesBox = () => {
   const { entities } = useSelector((state) => state.messages);
@@ -9,11 +9,10 @@ const MessagesBox = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
   console.log('currentChannelId>>>', currentChannelId);
   console.log(messages);
-  //   <ChatHeader currentChannelId={currentChannelId} />
-  // ВЫБОР ПО id = ChannelId
+
   return (
     <div className="d-flex flex-column h-100">
-
+      <ChatHeader currentChannelId={currentChannelId} />
       <div id="messages-box" className="chat-messages overflow-auto px-5 " />
       <Messages currentChannelId={currentChannelId} />
     </div>
