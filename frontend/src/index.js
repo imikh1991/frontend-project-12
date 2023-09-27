@@ -1,15 +1,15 @@
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import store from './store/store';
-import App from './App';
+import init from './init';
+import initSocket from './websocket';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const socket = initSocket();
+const vdom = init(socket);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    {vdom}
   </React.StrictMode>,
 );
