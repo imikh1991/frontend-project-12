@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import filter from 'leo-profanity';
 import { getCurrentChannelMessages } from '../../redux/slices/selectors';
 
-filter.add(filter.getDictionary('ru'));
-
+filter.add(filter.getDictionary('en'));
+// FIX ERROR
 const MessagesBox = () => {
   const channellsMesages = useSelector((state) => getCurrentChannelMessages(state));
 
