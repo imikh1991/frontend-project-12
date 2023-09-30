@@ -21,7 +21,8 @@ const init = (socket) => {
   const rollbarConfig = {
     enabled: true,
     // eslint-disable-next-line no-undef
-    accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    // FIX SECRET-TOKEN !!!
+    accessToken: '1099e6e158b44ca18ec8d6d92c4717c9',
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
