@@ -1,13 +1,15 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import AddChannel from '../modal/AddChannel';
-
-import { closeModal } from '../../store/slices/modalSlice';
+import AddChannel from '../modals/AddChannel';
+import RenameModal from '../modals/RenameChannel';
+import DeleteModal from '../modals/DeleteChannel';
+import { closeModal } from '../../redux/slices/modalsSlice';
 
 const mod = {
   add: AddChannel,
-
+  rename: RenameModal,
+  delete: DeleteModal,
 };
 
 const ChatModal = () => {

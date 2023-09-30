@@ -6,10 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusSquare } from 'react-bootstrap-icons';
-
-import { getAllChannels, getCurrentChannelId } from '../../store/slices/selectors';
-import { actions } from '../../store/slices/channelsSlice';
-import { openModal } from '../../store/slices/modalSlice';
+import filter from 'leo-profanity';
+import { getAllChannels, getCurrentChannelId } from '../../redux/slices/selectors';
+import { actions } from '../../redux/slices/channelsSlice';
+import { openModal } from '../../redux/slices/modalsSlice';
 
 const ChannelsList = () => {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const ChannelsList = () => {
         {channels && currentChannelId && (
           channels.map(({ id, name, removable }) => {
             const variant = id === currentChannelId ? 'secondary' : 'light';
-            const filteredName = name;
+            const filteredName = filter.clean(name);
             return (removable) ? (
               <Nav.Item key={id} className="w-100">
                 <Dropdown

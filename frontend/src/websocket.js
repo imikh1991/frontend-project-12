@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
-import store from './store/store';
-import { actions as channelsActions } from './store/slices/channelsSlice';
-import { actions as messagesActions } from './store/slices/messagesSlice';
+import store from './redux/store';
+import { actions as channelsActions } from './redux/slices/channelsSlice';
+import { actions as messagesActions } from './redux/slices/messagesSlice';
 
 const initSocket = () => {
   const socket = io();
@@ -20,9 +20,25 @@ const initSocket = () => {
     socket.emit('newChannel', { name }, callback);
   };
 
+  socket.on('renameChannel', ({ id, name }) => {
+    store.dispatch(channelsActions.updateChannel({ id, changes: { name } }));
+  });
+  const updateChannelName = ({ id, name }, callback) => {
+    socket.emit('renameChannel', { id, name }, callback);
+  };
+
+  socket.on('removeChannel', ({ id }) => {
+    store.dispatch(channelsActions.setDefaultChannelId(id));
+    store.dispatch(channelsActions.removeChannel(id));
+  });
+  const deleteChannel = (id, callback) => {
+    socket.emit('removeChannel', { id }, callback);
+  };
   return {
     sendMessage,
     createNewChannel,
+    updateChannelName,
+    deleteChannel,
   };
 };
 

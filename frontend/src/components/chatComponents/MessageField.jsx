@@ -1,39 +1,75 @@
-import { io } from 'socket.io-client';
+import React, { useRef, useEffect } from 'react';
+import { Button, Form, InputGroup } from 'react-bootstrap';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ArrowRightSquare } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
-// eslint-disable-next-line no-unused-vars
-const NewMessagesForm = ({ addMessage }) => {
-  const socket = io();
+import { useFormik } from 'formik';
 
-  const handleAddMessage = (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const message = {
-      body: data.get('text'),
-      username: localStorage.getItem('username'),
-      channelId: 1,
-    };
-    socket.emit('newMessage', message, (response) => {
-      console.log(response.status);
-      if (!response.status === 'ok') {
-        alert('Проверьте подключение к интернету!');
-      }
-    });
-    e.target.reset();
-  };
+import { useChatApi } from '../providers/ChatApiProvider';
+import { useAuth } from '../providers/AuthProvider';
+
+const MessageField = () => {
+  const { t } = useTranslation();
+  const { username } = useAuth();
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const { sendMessage } = useChatApi();
+
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      body: '',
+    },
+    onSubmit: ({ body }) => {
+      sendMessage({
+        body,
+        username,
+        channelId: currentChannelId,
+      }, formik.resetForm);
+    },
+  });
 
   return (
-    <div className="mt-auto px-5 py-3">
-      <form noValidate className="py-1 border rounded-2" onSubmit={handleAddMessage}>
-        <div className="input-group has-validation">
-          <input aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" name="text" />
-          <button type="submit" className="btn btn-group-vertical">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" /></svg>
-            <span className="visually-hidden">Отправить</span>
-          </button>
-        </div>
-      </form>
-    </div>
+    <Form
+      noValidate
+      className="py-1 border rounded-2"
+      onSubmit={formik.handleSubmit}
+    >
+      <Form.Group as={InputGroup} className="has-validation">
+        <Form.Control
+          onChange={formik.handleChange}
+          value={formik.values.body}
+          name="body"
+          id="body"
+          type="text"
+          ref={inputRef}
+          className="border-0 p-0 ps-2"
+          placeholder={t('placeholders.type_message')}
+          aria-label={t('chat.new_message')}
+        />
+        <Form.Label
+          htmlFor="body"
+          className="visually-hidden"
+        >
+          {t('new_message')}
+        </Form.Label>
+        <Button
+          type="submit"
+          variant="link"
+          className="mb-1 text-dark"
+          disabled={formik.isSubmitting}
+        >
+          <ArrowRightSquare size={20} />
+          <span className="visually-hidden">{t('submit')}</span>
+        </Button>
+      </Form.Group>
+    </Form>
   );
 };
 
-export default NewMessagesForm;
+export default MessageField;

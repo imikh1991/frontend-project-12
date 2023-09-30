@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import Messages from './Messages';
-import ChatHeader from './ChatHeader';
+import filter from 'leo-profanity';
+import { getCurrentChannelMessages } from '../../redux/slices/selectors';
+
+filter.add(filter.getDictionary('ru'));
 
 const MessagesBox = () => {
-  const { entities } = useSelector((state) => state.messages);
-  const messages = Object.values(entities);
-  const { currentChannelId } = useSelector((state) => state.channels);
-  console.log('currentChannelId>>>', currentChannelId);
-  console.log(messages);
+  const channellsMesages = useSelector((state) => getCurrentChannelMessages(state));
+
+  const messagesBoxRef = useRef(null);
+  useEffect(() => {
+    messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+  });
 
   return (
-    <div className="d-flex flex-column h-100">
-      <ChatHeader currentChannelId={currentChannelId} />
-      <div id="messages-box" className="chat-messages overflow-auto px-5 " />
-      <Messages currentChannelId={currentChannelId} />
+    <div
+      id="message-box"
+      className="chat-messages overflow-auto px-5"
+      ref={messagesBoxRef}
+    >
+      {channellsMesages && (
+        channellsMesages.map(({ id, body, username }) => {
+          const filteredBody = filter.clean(body);
+          return (
+            <div className="text-break mb-2" key={id}>
+              <b>{username}</b>
+              :
+              {filteredBody}
+            </div>
+          );
+        })
+      )}
     </div>
   );
 };
