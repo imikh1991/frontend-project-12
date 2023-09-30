@@ -4,13 +4,13 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-
+import filter from 'leo-profanity';
 import { useFormik } from 'formik';
-
 import { useChatApi } from '../providers/ChatApiProvider';
 import { useAuth } from '../providers/AuthProvider';
 
 const MessageField = () => {
+  filter.add(filter.getDictionary('en'));
   const { t } = useTranslation();
   const { username } = useAuth();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -25,7 +25,7 @@ const MessageField = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: ({ body }) => {
+    onSubmit: async ({ body }) => {
       sendMessage({
         body,
         username,
